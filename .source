@@ -1,0 +1,239 @@
+function:
+
+#include <iostream>
+using namespace std;
+
+int f(int a, int b)
+{
+	return a+b;
+}
+
+float f(float d[], int n)
+{
+	float sum = 0;
+	for(int i = 0; i < n; i++) 
+	{
+	  sum+=d[i];
+	 
+	}
+	return sum;
+}
+
+void main()
+{
+	float a, b;
+	cin>>a>>b;
+	cout<<f(a,b);
+}
+
+
+2048:
+
+#include<iostream>
+#include<conio.h>
+#include<time.h>
+using namespace std;
+const int SIZE = 4;
+int data[SIZE][SIZE] = { 0 };
+void Draw();//функция рисования ячеек
+void PrintCell(int, int);
+void AddRandom();//генерация случайного числа и запись в ячейку
+bool IsEnd();//проверка на заполненость ячеек
+bool MoveLine(int dir, int n);
+bool Move(int dir);
+void Game();
+const char LV = 218;
+const char PV = 191;
+const char LN = 192;
+const char PN = 217;
+const char CR = 197;
+
+void main()
+{
+	Game();
+	AddRandom();
+	Draw();
+	 
+}
+void Draw()//рисование ячеек
+{
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			PrintCell(j, i);
+		}
+		cout << endl<<endl;
+	}
+}
+void PrintCell(int x,int y)
+{
+	//cout << data[x][y]<<" ";
+	/*if (x == 0 && y == 0)
+		cout << LV;
+	if (x == 0 && y == 3)
+		cout << LN;*/
+
+	cout.width(4);
+	cout << data[y][x];
+
+	/*if (x == 3 && y == 0)
+		cout << PV;
+	if (x == 3 && y == 3)
+		cout << LN;
+*/
+}
+void AddRandom()
+{
+	int nextNumber = (rand() % 2 + 1) * 2;//генерируем числа от 1 до 2 и умножаем на 2
+	int x, y;
+	while (true)
+	{
+		x = rand() % 4;
+		y = rand() % 4;
+		if (data[y][x] == 0)//проверяе если в ячейке ноль то записывается сгенерированое число
+		{
+			data[y][x] = nextNumber;
+			break;
+		}
+		
+	}
+}
+bool IsEnd()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			if (data[i][j] == 0)
+				return false;
+			if (i<3 && data[i][j] == data[i + 1][j])
+				return false;
+			if (i<3 && data[j][i+1] == data[j][i])
+				return false;
+		}
+	}
+	return true;
+}
+
+bool Move(int dir)
+{
+	bool isMoved = false;
+	for (int i = 0; i < 4;i++)
+	if (MoveLine(dir, i))
+		isMoved = true;
+	return isMoved;
+}
+
+bool MoveLine(int dir, int n)
+{
+	int begin = dir % 2 ? 3 : 0;
+	int inc = dir % 2 ? -1 : 1;
+ 
+	if(dir <= 2)
+	{
+		for ( int i = begin; i >= 0 && i <= 3; i += inc)
+		{
+			for(int j = i + inc ; j >= 0 && j <= 3; j += inc)
+			{
+				if (data [i][n] == data [j][n])
+				{
+					data [i][n] += data [j][n];
+					data [j][n] = 0;
+					i += inc;
+					break;
+				}
+				else if (data [j][n] != 0)
+				{
+					break;
+				}
+			}
+		}
+		for (int i = begin; i >= 0 && i <= 3; i += inc) // Сдвигаем в лево
+		{
+			if (data[i][n] == 0)
+			{
+				for (int j = i; j >= 0 && j <= 3; j += inc)
+				{
+					if (data[j][n] != 0)
+					{
+						data[i][n] = data[j][n];
+						data[j][n] = 0;
+						break;
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+	for ( int i = begin; i >= 0 && i <= 3; i += inc)
+		{
+			for(int j = i + inc ; j >= 0 && j <= 3; j += inc)
+			{
+				if (data[n][i] == data[n][j])
+				{
+					data[n][i] += data[n][j];
+					data[n][j] = 0;
+					i += inc;
+					break;
+				}
+				else if (data[n][j] != 0)
+				{
+					break;
+				}
+			}
+		}
+		for (int i = begin; i >= 0 && i <= 3; i += inc) // Сдвигаем в лево
+		{
+			if (data[n][i] == 0)
+			{
+				for (int j = i; j >= 0 && j <= 3; j += inc)
+				{
+					if (data[n][j] != 0)
+					{
+						data[n][i] = data[n][j];
+						data[n][j] = 0;
+						break;
+					}
+				}
+			}
+		}
+	}
+return true;
+}
+
+void Game()
+{
+   AddRandom();
+   while(true)
+   {
+	   system("cls");
+	   Draw();
+	   int key=getch();
+	   if(key==224)
+	   {
+		   key=getch();
+		   switch(key)
+		   {
+			   case 80:
+			   Move(1);
+			   break;
+	            
+			   case 72:
+			   Move(2);
+			   break;
+
+			   case 377:
+			   Move(3);
+			   break;
+
+			   case 75:
+			   Move(4);
+			   break;
+		   }
+		   AddRandom();
+   }
+  }
+ 
+}
