@@ -260,3 +260,32 @@ void main()
 
 
 
+
+#include <iostream>
+using namespace std;
+
+template <typename T, typename T1>
+void f(T a, T1 b)
+{
+   return a+b;
+}
+
+char * summ(char a, char b)
+{
+	char* s[3]=;
+	s[0]=a;
+	s[1]=b;
+	s[2]=0;
+	return s;
+}
+
+void main()
+{
+	int a, b;
+	cin>>a>>b;
+	f(a,b);
+}
+
+шаблон функции который принимает в параметры массив количиство елементов и должен найти сумму елементов массива
+написать 2 перегруженных функции для поиска суммы корней квадратного и линейного уравнения
+
