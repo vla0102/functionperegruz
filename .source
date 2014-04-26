@@ -237,3 +237,26 @@ void Game()
   }
  
 }
+
+
+
+
+
+#include <iostream>
+using namespace std;
+
+template <typename T, typename T1>
+void f(T a, T1 b)
+{
+   cout<<sizeof(a)<<endl;
+   cout<<sizeof(b)<<endl;
+}
+
+void main()
+{
+   f('a',1);
+}
+
+
+
+
